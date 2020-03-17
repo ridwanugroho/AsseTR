@@ -1,0 +1,61 @@
+﻿
+@{
+    ViewData["Title"] = "Detail";
+    var detailIvt = ViewData["ivt"] as Goods;
+
+    if (ViewBag.user == 2)
+        Layout = "_ManagerLayout";
+
+    if (ViewBag.user == 3)
+        Layout = "_OperatorLayout";
+}
+
+Name : @detailIvt.Name <br />
+Brand : @detailIvt.Brand.Name <br />
+Price: @detailIvt.UnitPrice <br />
+SN : @detailIvt.SerialNumber <br />
+Last Status : @detailIvt.Status <br />
+Category : @detailIvt.Category.Name <br />
+Description : @detailIvt.Description <br />
+Last locations : @detailIvt.Locations.Name<br />
+
+<img src="~/@detailIvt.Images[0]" />
+<img src="~/@detailIvt.Images[1]" />
+
+<div name="History" class="w-50 text-center">
+    <h3>History</h3>
+    <table class="table table-dark">
+        <thead>
+            <tr>
+                <th scope="col">No</th>
+                <th scope="col">Location</th>
+                <th scope="col">In (date)</th>
+                <th scope="col">Out (date)</th>
+                <th scope="col">In (qty)</th>
+                <th scope="col">Out (qty)</th>
+                <th scope="col">In (status)</th>
+                <th scope="col">Out (status)</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{var i = 1;}
+            @foreach (var h in detailIvt.Histories)
+            {
+                <tr>
+                    <th scope="row">@i</th>
+                    <td>@h.Room.Name/@h.Room.Unit/@h.Room.Building</td>
+                    <td>@h.InDate</td>
+                    <td>@h.OutDate</td>
+                    <td>@h.InCount</td>
+                    <td>@h.OutCount</td>
+                    <td>@h.InStatus</td>
+                    <td>@h.OutStatus</td>
+                </tr>
+                i++;
+            }
+        </tbody>
+    </table>
+</div>
+
+
+

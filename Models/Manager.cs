@@ -5,10 +5,9 @@ using System.Threading.Tasks;
 
 namespace AsseTS.Models
 {
-    public class Administrator
+    public class Manager
     {
         public Guid Id { get; set; }
-        public string AdminCode { get; set; }
         public string UserId { get; set; }
     }
 }

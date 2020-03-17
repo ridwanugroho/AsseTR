@@ -1,0 +1,90 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "_ManagerLayout";
+    var cats = ViewData["cats"] as List<Category>;
+    var rooms = ViewData["rooms"] as List<Room>;
+    var brands = ViewData["brands"] as List<Brand>;
+}
+
+    <div>
+        <div name="category-list" class="w-50 text-center">
+            <h3>Category List</h3>
+            <table class="table table-dark">
+                <thead>
+                    <tr>
+                        <th scope="col">No</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Code</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{var i = 1;}
+                    @foreach (var c in cats)
+                    {
+                        <tr>
+                            <th scope="row">@i</th>
+                            <td>@c.Name</td>
+                            <td>@c.Code</td>
+                        </tr>
+                        i++;
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div name="category-list" class="w-50 text-center">
+            <h3>Room List</h3>
+            <table class="table table-dark">
+                <thead>
+                    <tr>
+                        <th scope="col">No</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Options</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{i = 1;}
+                    @foreach (var r in rooms)
+                    {
+                        <tr>
+                            <th scope="row">@i</th>
+                            <td>@r.Name</td>
+                            <td>
+                                <a class="btn" href="https://localhost:5001/Manager/UpdateRoom/@r.Id">Update</a>
+                            </td>
+                        </tr>
+                        i++;
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div name="category-list" class="w-50 text-center">
+            <h3>Brand List</h3>
+            <table class="table table-dark">
+                <thead>
+                    <tr>
+                        <th scope="col">No</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Code</th>
+                        <th scope="col">Rating</th>
+                        <th scope="col">Country</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{i = 1;}
+                    @foreach (var b in brands)
+                    {
+                        <tr>
+                            <th scope="row">@i</th>
+                            <td>@b.Name</td>
+                            <td>@b.Code</td>
+                            <td>@b.Rating</td>
+                            <td>@b.Country</td>
+                        </tr>
+                        i++;
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+

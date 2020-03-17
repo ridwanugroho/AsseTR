@@ -1,6 +1,6 @@
 ﻿using BCrypt.Net;
 
-namespace HRIS.Models
+namespace AsseTS.Models
 {
     public class Hashing
     {

@@ -1,0 +1,44 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    var goods = ViewData["goods"] as List<Goods>;
+
+    if (ViewBag.user == 2)
+        Layout = "_ManagerLayout";
+
+    if (ViewBag.user == 3)
+        Layout = "_OperatorLayout";
+}
+
+<div name="category-list" class="w-50 text-center">
+    <h3>Category List</h3>
+    <table class="table table-dark">
+        <thead>
+            <tr>
+                <th scope="col">No</th>
+                <th scope="col">Name</th>
+                <th scope="col">Options</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{var i = 1;}
+            @foreach (var g in goods)
+            {
+                <tr>
+                    <th scope="row">@i</th>
+                    <td>@g.Name</td>
+                    <td>
+                        <a class="btn" href="https://localhost:5001/Inventory/detail/@g.Id">Detail</a>
+                        <a class="btn" href="https://localhost:5001/Operator/updateGoods?goodsId=@g.Id">Update</a>
+                        <a class="btn" href="https://localhost:5001/Inventory/AddHistory?goodsId=@g.Id">Add History</a>
+                    </td>
+                </tr>
+                i++;
+            }
+        </tbody>
+    </table>
+</div>
+
+
+
+

@@ -1,22 +1,23 @@
 using System;
 using System.Collections.Generic;
+using System.Text;
+using System.Net;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-
-using AsseTS.Models;
-using AsseTS.Data;
-using Newtonsoft.Json;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
+
+using Newtonsoft.Json;
+using AsseTS.Data;
+using AsseTS.Models;
 
 namespace AsseTS
 {
@@ -75,10 +76,22 @@ namespace AsseTS
         {
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+                //app.UseDeveloperExceptionPage();
+                app.UseStatusCodePages(async context =>
+                {
+                    var response = context.HttpContext.Response;
+
+                    if (response.StatusCode == (int)HttpStatusCode.Unauthorized ||
+                        response.StatusCode == (int)HttpStatusCode.Forbidden)
+                        response.Redirect("/Error/UnauthorizedCustom");
+
+                    if (response.StatusCode == (int)HttpStatusCode.BadRequest)
+                        response.Redirect("/Error/BadRequestCustom");
+                });
             }
             else
             {
+
                 app.UseExceptionHandler("/Home/Error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
@@ -87,6 +100,7 @@ namespace AsseTS
             app.UseStaticFiles();
 
             app.UseRouting();
+            app.UseCookiePolicy();
             app.UseSession();
 
             app.Use(async (context, next) =>
@@ -104,7 +118,7 @@ namespace AsseTS
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
-            {
+            {  
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");

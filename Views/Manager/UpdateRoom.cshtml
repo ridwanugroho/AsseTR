@@ -1,0 +1,32 @@
+﻿
+@{
+    ViewData["Title"] = "AddRoom";
+    Layout = "_ManagerLayout";
+
+    var room = ViewData["room"] as Room;
+}
+
+<form class="w-25" asp-action="SubmitRoomUpdate" asp-controller="Manager" method="post">
+    <input value="@room.Id" name="id" hidden />
+    <div class="form-group">
+        <label for="name">Room Name</label>
+        <input value="@room.Name" type="text" class="form-control" id="name" name="name" aria-describedby="emailHelp" placeholder="Room Name" required>
+    </div>
+    <div class="form-group">
+        <label for="code">Code</label>
+        <input value="@room.Code" type="text" class="form-control" id="code" name="code" placeholder="Code" required>
+    </div>
+    <div class="form-group">
+        <label for="building">Building</label>
+        <input value="@room.Building" type="text" class="form-control" id="building" name="building" placeholder="Building" required>
+    </div>
+    <div class="form-group">
+        <label for="unit">Unit</label>
+        <input value="@room.Unit" type="text" class="form-control" id="unit" name="unit" placeholder="Unit" required>
+    </div>
+    <div class="form-group">
+        <label for="number">Number</label>
+        <input value="@room.Number" type="text" class="form-control" id="number" name="number" placeholder="Number">
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>

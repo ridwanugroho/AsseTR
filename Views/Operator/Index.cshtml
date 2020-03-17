@@ -1,0 +1,15 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    var goods = ViewData["goods"] as List<Goods>;
+
+    if (ViewBag.user == 2)
+        Layout = "_ManagerLayout";
+    
+    if (ViewBag.user == 3)
+        Layout = "_OperatorLayout";
+}
+
+Inventory list
+
+

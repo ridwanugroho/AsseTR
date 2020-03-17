@@ -1,0 +1,20 @@
+﻿
+@{
+    ViewData["Title"] = "Redirector";
+    var user = ViewData["user"] as User;
+    var role = user.Role;
+}
+
+<h1>Welcome, @user.FullName</h1>
+
+<script>
+    setTimeout(function () {
+        var role = '@role';
+        if(role == 1)
+            window.location.href = "https://localhost:5001/Administrator";
+        if(role == 2)
+            window.location.href = "https://localhost:5001/Manager";
+        if(role == 3)
+            window.location.href = "https://localhost:5001/Operator";
+    }, 1000);
+</script>

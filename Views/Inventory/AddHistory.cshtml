@@ -1,0 +1,52 @@
+﻿
+@{
+    ViewData["Title"] = "AddHistory";
+    var ivt = ViewData["ivt"] as Goods;
+    var rooms = ViewData["rooms"] as List<Room>;
+
+    if (ViewBag.user == 2)
+        Layout = "_ManagerLayout";
+    
+    if (ViewBag.user == 3)
+        Layout = "_OpearatorLayout";
+}
+
+<form class="w-25" asp-action="SubmitHistory" asp-controller="Inventory" method="post" enctype="multipart/form-data">
+    <input name="goodsId" value="@ivt.Id" hidden/>
+    <div class="form-group">
+        <label for="instatus">In Status</label>
+        <input type="text" class="form-control" id="instatus" name="instatus" aria-describedby="emailHelp" required>
+    </div>
+    <div class="form-group">
+        <label for="outstatus">Out Status</label>
+        <input type="text" class="form-control" id="outstatus" name="outstatus" required>
+    </div>
+    <div class="form-group">
+        <label for="incount">In Count</label>
+        <input type="text" class="form-control" id="brand" name="incount" required>
+    </div>
+    <div class="form-group">
+        <label for="outcount">Out Count</label>
+        <input type="text" class="form-control" id="outcount" name="outcount" required>
+    </div>
+    <div class="form-group">
+        <label for="In Date">In Date</label>
+        <input type="datetime-local" class="form-control" id="indate" name="indate" >
+    </div>
+    <div class="form-group">
+        <label for="outdate">Out Date</label>
+        <input type="datetime-local" class="form-control" id="outdate" name="outdate" >
+    </div>
+    <div class="form-group">
+        <label for="location">Location</label>
+        <select id="location" name="location">
+            @foreach (var r in rooms)
+            {
+                <option value="@r.Id">@r.Name</option>
+            }
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+
