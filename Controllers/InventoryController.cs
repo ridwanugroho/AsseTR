@@ -33,6 +33,7 @@ namespace AsseTS.Controllers
             ViewBag.user = userRole;
 
             ViewBag.filter = filter;
+            ViewBag.order = order;
 
             var goods = (from g in db.Goods.Include(l=>l.Locations).Include(c=>c.Category).Include(b=>b.Brand) select g).ToList();
 

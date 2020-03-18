@@ -16,7 +16,7 @@
         <form asp-controller="Inventory" asp-action="Index" method="get">
             <input value="@ViewBag.filter" name="filter" type="text" placeholder="Search..">
             <button type="submit">Set</button><br />
-            <select name="order">
+            <select id="order-sel" name="order">
                 <option value="1">Name(asc)</option>
                 <option value="2">Name(dsc)</option>
                 <option value="3">Date Added(asc)</option>
@@ -52,6 +52,14 @@
     </table>
 </div>
 
-
-
+@section Scripts
+{
+<script>
+    $(document).ready(function () {
+        var selValue = '@ViewBag.order';
+        if(selValue != "")
+            document.getElementById("order-sel").value = selValue;
+    })
+</script>
+}
 
