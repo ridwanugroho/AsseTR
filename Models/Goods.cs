@@ -22,6 +22,7 @@ namespace AsseTS.Models
         public string Status { get; set; }
         public Room Locations { get; set; }
         public string SerialNumber { get; set; }
+        public string Barcode { get; set; }
 
         public int DataStatus { get; set; } = 1;
 

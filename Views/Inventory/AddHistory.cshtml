@@ -8,26 +8,38 @@
         Layout = "_ManagerLayout";
     
     if (ViewBag.user == 3)
-        Layout = "_OpearatorLayout";
+        Layout = "_OperatorLayout";
 }
 
 <form class="w-25" asp-action="SubmitHistory" asp-controller="Inventory" method="post" enctype="multipart/form-data">
     <input name="goodsId" value="@ivt.Id" hidden/>
-    <div class="form-group">
-        <label for="instatus">In Status</label>
-        <input type="text" class="form-control" id="instatus" name="instatus" aria-describedby="emailHelp" required>
-    </div>
-    <div class="form-group">
-        <label for="outstatus">Out Status</label>
-        <input type="text" class="form-control" id="outstatus" name="outstatus" required>
+    <div>
+        <div class="d-inline-block">
+            <div class="form-group">
+                <label for="instatus">In Status</label>
+                <input type="text" class="form-control" id="instatus" name="instatus" aria-describedby="emailHelp" >
+            </div>
+            <div class="form-group">
+                <label for="outstatus">Out Status</label>
+                <input type="text" class="form-control" id="outstatus" name="outstatus" >
+            </div>
+        </div>
+        <div class="d-inline-block">
+            Status : <br />
+            1 = in stock <br />
+            2 = in use<br />
+            3 = broken <br />
+            4 = lost<br />
+            5 = in repair<br />
+        </div>
     </div>
     <div class="form-group">
         <label for="incount">In Count</label>
-        <input type="text" class="form-control" id="brand" name="incount" required>
+        <input type="text" class="form-control" id="brand" name="incount" >
     </div>
     <div class="form-group">
         <label for="outcount">Out Count</label>
-        <input type="text" class="form-control" id="outcount" name="outcount" required>
+        <input type="text" class="form-control" id="outcount" name="outcount" >
     </div>
     <div class="form-group">
         <label for="In Date">In Date</label>

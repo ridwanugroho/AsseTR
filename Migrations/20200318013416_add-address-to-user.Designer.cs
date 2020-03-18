@@ -4,14 +4,16 @@ using AsseTS.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace AsseTS.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200318013416_add-address-to-user")]
+    partial class addaddresstouser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -77,9 +79,6 @@ namespace AsseTS.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Barcode")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<Guid?>("BrandId")
                         .HasColumnType("uniqueidentifier");
 
@@ -139,16 +138,10 @@ namespace AsseTS.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("HistoryType")
-                        .HasColumnType("int");
-
-                    b.Property<Guid?>("InChargeId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<int>("InCount")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("InDate")
+                    b.Property<DateTime>("InDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("InStatus")
@@ -157,7 +150,7 @@ namespace AsseTS.Migrations
                     b.Property<int>("OutCount")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("OutDate")
+                    b.Property<DateTime>("OutDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("OutStatus")
@@ -167,8 +160,6 @@ namespace AsseTS.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("InChargeId");
 
                     b.HasIndex("RoomId");
 
@@ -213,9 +204,6 @@ namespace AsseTS.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("DataStatus")
-                        .HasColumnType("int");
-
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
@@ -256,10 +244,6 @@ namespace AsseTS.Migrations
 
             modelBuilder.Entity("AsseTS.Models.History", b =>
                 {
-                    b.HasOne("AsseTS.Models.User", "InCharge")
-                        .WithMany()
-                        .HasForeignKey("InChargeId");
-
                     b.HasOne("AsseTS.Models.Room", "Room")
                         .WithMany()
                         .HasForeignKey("RoomId");

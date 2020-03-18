@@ -18,9 +18,13 @@ Last Status : @detailIvt.Status <br />
 Category : @detailIvt.Category.Name <br />
 Description : @detailIvt.Description <br />
 Last locations : @detailIvt.Locations.Name<br />
+<img class="w-25 h-25" src="~/@detailIvt.Barcode" /><br /><br />
 
-<img src="~/@detailIvt.Images[0]" />
-<img src="~/@detailIvt.Images[1]" />
+@foreach(var img in detailIvt.Images)
+{
+    <img class="w-25 h-25" src="~/@img" />
+}
+<br />
 
 <div name="History" class="w-50 text-center">
     <h3>History</h3>
@@ -35,6 +39,7 @@ Last locations : @detailIvt.Locations.Name<br />
                 <th scope="col">Out (qty)</th>
                 <th scope="col">In (status)</th>
                 <th scope="col">Out (status)</th>
+                <th scope="col">In Charge</th>
             </tr>
         </thead>
         <tbody>
@@ -50,6 +55,10 @@ Last locations : @detailIvt.Locations.Name<br />
                     <td>@h.OutCount</td>
                     <td>@h.InStatus</td>
                     <td>@h.OutStatus</td>
+                    <td>
+                        <a href="https://localhost:5001/Administrator/userDetail/@h.InCharge.Id">@h.InCharge.FullName</a><br />
+                        @h.InCharge.Phone
+                    </td>
                 </tr>
                 i++;
             }

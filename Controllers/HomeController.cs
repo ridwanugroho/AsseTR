@@ -53,7 +53,7 @@ namespace AsseTS.Controllers
 
             if (_user == null)
             {
-                ViewData["loginInfo"] = "Email/ Password salah :(";
+                ViewData["loginInfo"] = "Email/ Password salah";
                 return View("Index");
             }
 
@@ -114,7 +114,7 @@ namespace AsseTS.Controllers
 
         public User AuthenticatedUser(User user_input)
         {
-            var user = from _user in db.User where _user.Email == user_input.Email select _user;
+            var user = from _user in db.User where _user.Email == user_input.Email && _user.DataStatus != 0 select _user;
 
             if (user.FirstOrDefault() != null)
             {

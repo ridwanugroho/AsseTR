@@ -1,17 +1,57 @@
 ﻿
 @{
     ViewData["Title"] = "Index";
+    var users = ViewData["users"] as List<User>;
+
+    Layout = "_AdminLayout";
 }
 
-<form class="w-25">
-    <div class="form-group">
-        <label for="adminCode">Admin Code</label>
-        <input type="text" class="form-control" id="adminCode" aria-describedby="emailHelp" placeholder="Code">
-    </div>
-    <div class="form-group">
-        <label for="Password">Password</label>
-        <input type="password" class="form-control" id="Password" placeholder="Password">
-    </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
-</form>
-
+<a  class="btn btn-primary" href="https://localhost:5001/Administrator/CreateUser">Add</a><br />
+<table class="table table-dark">
+    <thead>
+        <tr>
+            <th scope="col">No</th>
+            <th scope="col">Name</th>
+            <th scope="col">Role</th>
+            <th scope="col">Options</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{var i = 1;}
+        @foreach (var u in users)
+        {
+            <tr>
+                <th scope="row">@i</th>
+                <td>
+                    @if(u.DataStatus == 0)
+                    {
+                        <span>@u.FullName - (REMOVED)</span>
+                    }
+                    else
+                    {
+                        <span>@u.FullName</span>
+                    }
+                </td>
+                <td>@u.Role</td>
+                <td>
+                    <a class="btn" href="https://localhost:5001/Administrator/update/@u.Id">Update</a>
+                    @if (u.DataStatus == 0)
+                    {
+                        <a class="btn" href="https://localhost:5001/Administrator/Restore/@u.Id">Restore</a>
+                    }
+                    else
+                    {
+                        <a class="btn" href="https://localhost:5001/Administrator/remove/@u.Id">Remove</a>
+                    }
+                </td>
+            </tr>
+            i++;
+        }
+    </tbody>
+</table>
+<br />
+<br />
+Role : <br />
+1 - Administrator<br />
+2 - Manager<br />
+3 - Operator<br />

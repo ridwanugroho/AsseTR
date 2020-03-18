@@ -29,7 +29,7 @@
             <select id="brand" name="brand">
                 @foreach (var r in brands)
                 {
-                    if(r.Id == item.Brand.Id)
+                    if (r.Id == item.Brand.Id)
                     {
                         <option value="@r.Id" selected>@r.Name</option>
                     }
@@ -74,7 +74,7 @@
             <select id="location" name="location">
                 @foreach (var r in rooms)
                 {
-                    if(r.Id == item.Locations.Id)
+                    if (r.Id == item.Locations.Id)
                     {
                         <option value="@r.Id" selected>@r.Name</option>
                     }
@@ -85,10 +85,12 @@
                 }
             </select>
         </div>
-        
-        <input type="tel" name="prevImg" value="@item.Images[0]" hidden/>
-        <input type="tel" name="prevImg" value="@item.Images[1]" hidden/>
-        
+
+        @foreach (var img in item.Images)
+        {
+            <input type="tel" name="prevImg" value="@img" hidden />
+        }
+
         <div class="form-group">
             <label for="images">Images</label>
             <input type="file" name="img" />

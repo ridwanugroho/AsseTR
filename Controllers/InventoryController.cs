@@ -2,14 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web;
 using Microsoft.AspNetCore.Mvc;
-
-using AsseTS.Models;
-using AsseTS.Data;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
+
+using AsseTS.Models;
+using AsseTS.Data;
+using System.IO;
 
 namespace AsseTS.Controllers
 {
@@ -23,14 +25,31 @@ namespace AsseTS.Controllers
         }
 
         [Authorize]
-        public IActionResult Index()
+        public IActionResult Index(string filter, int ? order, string location)
         {
+
             var userId = HttpContext.Session.GetString("id");
             var userRole = db.User.Find(Guid.Parse(userId)).Role;
             ViewBag.user = userRole;
 
-            var goods = from g in db.Goods select g;
-            ViewData["goods"] = goods.ToList();
+            ViewBag.filter = filter;
+
+            var goods = (from g in db.Goods.Include(l=>l.Locations).Include(c=>c.Category).Include(b=>b.Brand) select g).ToList();
+
+            if (!string.IsNullOrEmpty(filter))
+                goods = (from g in goods
+                        where g.Name.Contains(filter) ||
+                        g.Locations.Name.Contains(filter) ||
+                        g.Category.Name.Contains(filter) ||
+                        g.Brand.Name.Contains(filter) ||
+                        g.Status.Contains(filter) ||
+                        g.SerialNumber.Contains(filter)
+                        select g).ToList();
+
+            if (order.HasValue)
+                goods = orderBy(goods, order.Value);
+
+            ViewData["goods"] = goods;
 
             return View();
         }
@@ -42,10 +61,10 @@ namespace AsseTS.Controllers
             var userRole = db.User.Find(Guid.Parse(userId)).Role;
             ViewBag.user = userRole;
 
-            var ivt = from g in db.Goods.Include(b => b.Brand).Include(c => c.Category).Include(r => r.Locations) 
-                      where g.Id.ToString() == id select g;
+            var ivt = (from g in db.Goods.Include(b => b.Brand).Include(c => c.Category).Include(r => r.Locations)
+                      where g.Id.ToString() == id select g).First();
 
-            ViewData["ivt"] = ivt.First();
+            ViewData["ivt"] = ivt;
 
             return View();
         }
@@ -55,13 +74,13 @@ namespace AsseTS.Controllers
         {
             var userId = HttpContext.Session.GetString("id");
             var userRole = db.User.Find(Guid.Parse(userId)).Role;
+            ViewBag.user = userRole;
 
             var rooms = from r in db.Rooms select r;
             var ivt = db.Goods.Find(Guid.Parse(goodsId));
 
             ViewData["ivt"] = ivt;
             ViewData["rooms"] = rooms.ToList();
-            ViewBag.user = userRole;
 
             return View();
         }
@@ -70,9 +89,14 @@ namespace AsseTS.Controllers
         [HttpPost]
         public IActionResult SubmitHistory(string goodsId, History history, string location)
         {
-                
+            if (string.IsNullOrEmpty(history.InStatus))
+                history.InDate = null;
+            else
+                history.OutDate = null;
+
             var loc = db.Rooms.Find(Guid.Parse(location));
             history.Room = loc;
+            history.InCharge = db.User.Find(Guid.Parse(HttpContext.Session.GetString("id")));
 
             db.Histories.Add(history);
 
@@ -88,5 +112,38 @@ namespace AsseTS.Controllers
 
             return RedirectToAction("Index");
         }
+
+        public static List<Goods> orderBy(List<Goods> goods, int? order)
+        {
+            switch (order)
+            {
+                case 1:
+                    goods = goods.OrderBy(p => p.Name).ToList();
+                    break;
+
+                case 2:
+                    goods = goods.OrderByDescending(p => p.Name).ToList();
+                    break;
+
+                case 3:
+                    goods = goods.OrderBy(p => p.CreatedAt).ToList();
+                    break;
+
+                case 4:
+                    goods = goods.OrderByDescending(p => p.CreatedAt).ToList();
+                    break;
+
+                /*case 5:
+                    goods = goods.OrderBy(p => p.JoinDate).ToList();
+                    break;
+
+                case 6:
+                    goods = goods.OrderByDescending(p => p.JoinDate).ToList();
+                    break;*/
+            }
+
+            return goods;
+        }
+
     }
 }

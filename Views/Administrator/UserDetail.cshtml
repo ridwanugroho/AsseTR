@@ -1,0 +1,23 @@
+﻿
+@{
+    ViewData["Title"] = "UserDetail";
+    var u = ViewData["usr"] as User;
+
+    if (ViewBag.user == 2)
+        Layout = "_ManagerLayout";
+
+    if (ViewBag.user == 3)
+        Layout = "_OperatorLayout";
+
+    else
+        Layout = "_AdminLayout";
+}
+
+<h1>UserDetail</h1>
+
+Name : @u.FullName <br />
+Email : @u.Email <br />
+Telepon : @u.Phone<br />
+Alamat : @u.Address.Street, @u.Address.SubDistric, @u.Address.City, @u.Address.Country <br />
+Jabatan : @u.Role <br />
+

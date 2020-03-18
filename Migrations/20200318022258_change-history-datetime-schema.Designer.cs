@@ -4,14 +4,16 @@ using AsseTS.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace AsseTS.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200318022258_change-history-datetime-schema")]
+    partial class changehistorydatetimeschema
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -77,9 +79,6 @@ namespace AsseTS.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Barcode")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<Guid?>("BrandId")
                         .HasColumnType("uniqueidentifier");
 
@@ -142,9 +141,6 @@ namespace AsseTS.Migrations
                     b.Property<int>("HistoryType")
                         .HasColumnType("int");
 
-                    b.Property<Guid?>("InChargeId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<int>("InCount")
                         .HasColumnType("int");
 
@@ -166,9 +162,10 @@ namespace AsseTS.Migrations
                     b.Property<Guid?>("RoomId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("Id");
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasIndex("InChargeId");
+                    b.HasKey("Id");
 
                     b.HasIndex("RoomId");
 
@@ -213,9 +210,6 @@ namespace AsseTS.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("DataStatus")
-                        .HasColumnType("int");
-
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
@@ -256,10 +250,6 @@ namespace AsseTS.Migrations
 
             modelBuilder.Entity("AsseTS.Models.History", b =>
                 {
-                    b.HasOne("AsseTS.Models.User", "InCharge")
-                        .WithMany()
-                        .HasForeignKey("InChargeId");
-
                     b.HasOne("AsseTS.Models.Room", "Room")
                         .WithMany()
                         .HasForeignKey("RoomId");

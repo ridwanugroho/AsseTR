@@ -4,6 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
+using BarcodeLib;
+using System.Drawing;
+using System.Drawing.Imaging;
+using Color = System.Drawing.Color;
+
 using AsseTS.Models;
 using AsseTS.Data;
 using Microsoft.AspNetCore.Http;
@@ -73,7 +78,8 @@ namespace AsseTS.Controllers
             goods.Brand = _brand;
             goods.Category = cat;
             goods.Images = filename;
-
+            goods.Barcode = generateBarcode(goods.SerialNumber);
+            
             db.Goods.Add(goods);
 
             db.SaveChanges();
@@ -107,16 +113,18 @@ namespace AsseTS.Controllers
         {
             var tempG = db.Goods.Find(goods.Id);
 
-            var propName = typeof(Goods).GetProperties();
 
             goods.CreatedAt = tempG.CreatedAt;
             goods.Histories = tempG.Histories;
+            goods.Barcode = tempG.Barcode;
             var _brand = db.Brands.Find(Guid.Parse(brand));
             var cat = db.Categories.Find(Guid.Parse(category));
             var room = db.Rooms.Find(Guid.Parse(location));
             goods.Locations = room;
             goods.Brand = _brand;
             goods.Category = cat;
+
+            var propName = typeof(Goods).GetProperties();
 
             foreach (var n in propName)
             {
@@ -151,6 +159,24 @@ namespace AsseTS.Controllers
             db.SaveChanges();
 
             return RedirectToAction("Index", "Inventory");
+        }
+
+        private string generateBarcode(string sn)
+        {
+            Barcode barcodeAPI = new Barcode();
+
+            int imageWidth = 290;
+            int imageHeight = 120;
+            Color foreColor = Color.Black;
+            Color backColor = Color.Transparent;
+            string data = sn;
+
+            Image barcodeImage = barcodeAPI.Encode(TYPE.CODE128, data, foreColor, backColor, imageWidth, imageHeight);
+            var path = Path.Combine("wwwroot/barcode/", Path.GetRandomFileName() + ".png");
+
+            barcodeImage.Save(path, ImageFormat.Png);
+
+            return path.Substring(8);
         }
     }
 }
